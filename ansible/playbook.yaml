@@ -1,0 +1,109 @@
+# - hosts: nginx
+#   remote_user: sensai
+#   tags: nginx
+#   tasks:
+#     - name: install nginx
+#       apt:
+#         name: nginx
+#         state: present
+#       become: true
+# - hosts: mysql
+#   remote_user: sensai
+#   tags: mysql
+#   tasks:
+#     - name: install mysql
+#       apt:
+#         name: mysql-server
+#         state: present
+#       become: true
+# - hosts: ftp
+#   remote_user: sensai
+#   tags: ftp
+#   tasks:
+#     - name: install vsftpd
+#       apt:
+#         name: vsftpd
+#         state: present
+#       become: true
+# - hosts: tester
+#   remote_user: sensai
+#   tags: tester
+#   tasks:
+#     - name: install apache2-utils
+#       apt:
+#         name: apache2-utils
+#         state: present
+#       become: true
+#     - name: install mysqlslap
+#       apt:
+#         name: mysql-client
+#         state: present
+#       become: true
+#     - name: install python
+#       apt:
+#         name: python3.7
+#         state: present
+#     - name: install pip
+#       apt:
+#         name: python3-pip
+#         state: present
+#       become: true
+#     - name: install ftpbench
+#       pip:
+#         name: ftpbench
+#         state: present
+#     - name: copy wrapper Script
+#       copy:
+#         src: main.py
+#         dest: ~/
+# - hosts: nginx:mysql
+#   remote_user: sensai
+#   tags: metricbeat
+#   tasks:
+#     - name: Download metricbeat 7.6.1
+#       get_url:
+#         dest: ~/
+#         url: https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.6.1-amd64.deb
+#     - name: copy files install
+#       copy:
+#         dest: ~/
+#         src: metricbeat/install
+#     - name: copy files metricbeat.service
+#       copy:
+#         dest: ~/
+#         src: metricbeat/metricbeat.service
+#     - name: copy files system.yml
+#       copy:
+#         dest: ~/
+#         src: metricbeat/system.yml
+#     - name: run installation
+#       command: echo test
+#       args:
+#         chdir: ~/
+#       become: true
+#     # - name: Extract merticbeat into home directory
+#     #   unarchive:
+#     #     src: metricbeat.tar.gz
+#     #     dest: ~/
+- hosts: db-check:ftp-check:nginx-check
+  remote_user: sensai
+  tags: check
+  tasks:
+    - name: change hostname
+      shell: hostnamectl set-hostname $(cat /etc/hostname)
+      become: true
+# - hosts: ftp
+#   remote_user: sensai
+#   tags: ftp
+#   tasks:
+#     - name: copy files ftp-cleaning.sh
+#       copy:
+#         dest: ~/
+#         src: ../ftp-cleaning.sh  
+#         mode: 0711
+#     - name: change hostname
+#       cron:
+#         name: "Clean FTP"
+#         user: "sensai"
+#         job: "/home/sensai/ftp-cleaning.sh"
+      

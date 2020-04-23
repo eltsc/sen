@@ -1,0 +1,18 @@
+# Module: system
+
+- module: system
+  period: 5s
+  metricsets:
+    - cpu
+    - load
+    - memory
+    - network
+    - diskio
+    - filesystem
+    - fsstat
+    - process
+    - socket
+    - process_summary
+    - socket_summary
+
+  cpu.metrics: [percentages, normalized_percentages, ticks]

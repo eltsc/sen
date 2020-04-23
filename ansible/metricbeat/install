@@ -1,0 +1,41 @@
+#!/bin/bash
+
+
+function metricbeat_action(){
+        action=$1
+        systemctl $action metricbeat.service
+}
+
+function turn_off(){
+	metricbeat_action stop
+        metricbeat_action disable
+}
+
+function turn_on(){
+	metricbeat_action enable
+        metricbeat_action start
+}
+
+function service_update(){
+        cp metricbeat.service /lib/systemd/system/metricbeat.service
+        systemctl daemon-reload
+}
+
+function upgrade_modules(){
+        cp system.yml /etc/metricbeat/modules.d
+
+}
+
+function install_metricbeat(){
+	dpkg -i *.deb
+}
+
+
+
+# main 
+
+install_metricbeat
+turn_off
+upgrade_modules
+service_update
+turn_on

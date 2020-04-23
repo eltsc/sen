@@ -1,0 +1,7 @@
+**/*.pyc
+**/*.tfstate
+**/*.tfstate.backup
+**/*.tfvars
+**/.vscode
+**/.terraform
+**/.devcontainer
