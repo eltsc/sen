@@ -1,4 +1,4 @@
-- hosts: check-nginx
+- hosts: {{ nginx_name }}
   remote_user: sensai
   tags: nginx
   tasks:
@@ -7,7 +7,7 @@
         name: nginx
         state: present
       become: true
-- hosts: db
+- hosts: {{ mysql_name }}
   remote_user: sensai
   tags: mysql
   tasks:
@@ -16,7 +16,7 @@
         name: mysql-server
         state: present
       become: true
-- hosts: check-ftp
+- hosts: {{ftp_name}}
   remote_user: sensai
   tags: ftp
   tasks:
@@ -25,7 +25,7 @@
         name: vsftpd
         state: present
       become: true
-- hosts: tester
+- hosts: {{tester_name}}
   remote_user: sensai
   tags: tester
   tasks:
@@ -52,39 +52,39 @@
       pip:
         name: ftpbench
         state: present
+    - name: Ensures ~/loading dir exists
+      file: path=~/loading state=directory  
     - name: copy wrapper Script
       copy:
         src: main.py
         dest: ~/loading
-- hosts: check-nginx:db
+- hosts: {{ nginx_name }}:{{ mysql_name }}
   remote_user: sensai
   tags: metricbeat
   tasks:
+    - name: Ensures ~/metricbeat dir exists
+      file: path=~/metricbeat state=directory
     - name: Download metricbeat 7.6.1
       get_url:
-        dest: ~/
+        dest: ~/metricbeat
         url: https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.6.1-amd64.deb
     - name: copy files install
       copy:
-        dest: ~/
+        dest: ~/metricbeat
         src: metricbeat/install
     - name: copy files metricbeat.service
       copy:
-        dest: ~/
+        dest: ~/metricbeat
         src: metricbeat/metricbeat.service
     - name: copy files system.yml
       copy:
-        dest: ~/
+        dest:~/metricbeat
         src: metricbeat/system.yml
     - name: run installation
       command: echo test
       args:
-        chdir: ~/
+        chdir: ~/metricbeat
       become: true
-    # - name: Extract merticbeat into home directory
-    #   unarchive:
-    #     src: metricbeat.tar.gz
-    #     dest: ~/
 - hosts: all
   remote_user: sensai
   tags: hostname
@@ -92,7 +92,7 @@
     - name: change hostname
       shell: hostnamectl set-hostname $(cat /etc/hostname)
       become: true
-- hosts: check-ftp
+- hosts: {{ ftp_name }}
   remote_user: sensai
   tags: ftp
   tasks:

@@ -32,4 +32,11 @@ resource "vcd_vapp_vm" "vm" {
     is_primary         = true
     ip_allocation_mode = "POOL"
   }
+
+  #   override_template_disk {
+  #   bus_type         = "parallel"
+  #   size_in_mb       = "65536"
+  #   bus_number       = 0
+  #   unit_number      = 0
+  # }
 }

@@ -7,7 +7,7 @@ provider "vcd" {
   max_retry_timeout    = "${var.vcd_max_retry_timeout}"
   allow_unverified_ssl = "${var.vcd_allow_unverified_ssl}"
 }
-
+/*
 module "nginx" {
   source = "./machine"
 
@@ -22,7 +22,7 @@ module "nginx" {
   accept_all_eulas               = "${var.accept_all_eulas}"
   expose_hardware_virtualization = "${var.expose_hardware_virtualization}"
 }
-
+*/
 module "ftp" {
   source = "./machine"
 
@@ -37,7 +37,7 @@ module "ftp" {
   accept_all_eulas               = "${var.accept_all_eulas}"
   expose_hardware_virtualization = "${var.expose_hardware_virtualization}"
 }
-
+/*
 module "db" {
   source = "./machine"
 
@@ -52,3 +52,4 @@ module "db" {
   accept_all_eulas               = "${var.accept_all_eulas}"
   expose_hardware_virtualization = "${var.expose_hardware_virtualization}"
 } 
+*/
